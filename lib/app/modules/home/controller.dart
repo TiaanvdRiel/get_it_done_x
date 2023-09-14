@@ -4,19 +4,19 @@ import 'package:get/get.dart';
 import '../../data/modules/task.dart';
 import '../../data/services/storage/repository.dart';
 
-
 class HomeController extends GetxController {
   TaskRepository taskRepository;
+
   HomeController({required this.taskRepository});
 
   final formKey = GlobalKey<FormState>();
   final editController = TextEditingController();
   final iconChipIndex = 0.obs; //TODO this is the chip index for the icon -> remove this
-  final deleting = false.obs;
+  final deleting = false.obs; //TODO delete task
   final tasks = <Task>[].obs; // TODO this .obs means observable -> whenever they change, redraw the page
-  final task = Rx<Task?>(null);
-  final doingTodos = [].obs;
-  final doneTodos = [].obs;
+  final task = Rx<Task?>(null); //TODO this is the todoListItem, NO this should be selected list, but I still think I can get rid of this
+  final doingTodos = [].obs; //inProgressItems
+  final doneTodos = [].obs; //completedListItems
   final tabIdx = 0.obs;
 
   @override
@@ -28,6 +28,7 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    editController.dispose();
     super.onClose();
   }
 
@@ -39,10 +40,11 @@ class HomeController extends GetxController {
     tabIdx.value = value;
   }
 
-  void changeDeleteing(bool val) {
+  void changeDeleting(bool val) {
     deleting.value = val;
   }
 
+  //TODO: call this deleteTodoList
   void deleteTask(Task task) {
     tasks.remove(task);
   }
@@ -51,18 +53,20 @@ class HomeController extends GetxController {
     task.value = select;
   }
 
-  updateTask(Task task, String title) {
-    var todos = task.todos ?? [];
-    if (conainteTodo(todos, title)) return false;
-    var todo = {'title': title, 'done': false};
-    todos.add(todo);
-    var newTask = task.copyWith(todos: todos);
-    int oldIdx = tasks.indexOf(task);
-    tasks[oldIdx] = newTask;
-    tasks.refresh();
+  //updateTodoList
+  updateTask(Task todoList, String title) {
+    var todoListItems = todoList.todos ?? []; //var todoListItems = todoList.todoListItems
+    if (containsItem(todoListItems, title)) return false;
+    var item = {'title': title, 'done': false}; //var item = {'title: title, 'done': false}
+    todoListItems.add(item); // todoListItems.add(item)
+    var newTask = todoList.copyWith(todos: todoListItems); //var newTodoList = todoList.copyWith(todoListItems: todoListItems)
+    int oldIndex = tasks.indexOf(todoList); // int oldIndex = todoLists.indexOf(todoList)
+    tasks[oldIndex] = newTask; //todoLists[oldIndex] = newTodoList
+    tasks.refresh(); //todoLists.refresh()
     return true;
   }
 
+  //createTodoList
   bool addTask(Task task) {
     if (tasks.contains(task)) {
       return false;
@@ -71,52 +75,56 @@ class HomeController extends GetxController {
     return true;
   }
 
-  bool conainteTodo(List todos, title) {
-    return todos.any((element) => element['title'] == title);
+  //containsItem
+  bool containsItem(List todoListItems, title) {
+    return todoListItems.any((element) => element['title'] == title);
   }
 
+  //setListItems
   void changeTodos(List<dynamic> select) {
     doingTodos.clear();
     doneTodos.clear();
     for (var i = 0; i < select.length; i++) {
-      var todo = select[i];
-      var status = todo['done'];
+      var listItem = select[i];
+      var status = listItem['done'];
       if (status == true) {
-        doneTodos.add(todo);
+        doneTodos.add(listItem);
       } else {
-        doingTodos.add(todo);
+        doingTodos.add(listItem);
       }
     }
   }
 
+  //TODO: Do I need this? Probably not huh
+  //add a list item
   bool addTodo(String title) {
     var todoDoing = {'title': title, 'done': false};
     var todoDone = {'title': title, 'done': false};
-    if (doingTodos
-        .any((element) => mapEquals<String, dynamic>(todoDoing, element))) {
+    //TODO: this just checks if it already exists
+    if (doingTodos.any((element) => mapEquals<String, dynamic>(todoDoing, element))) {
       return false;
     }
-    if (doneTodos
-        .any((element) => mapEquals<String, dynamic>(todoDone, element))) {
+    if (doneTodos.any((element) => mapEquals<String, dynamic>(todoDone, element))) {
       return false;
     }
     doingTodos.add(todoDoing);
     return true;
   }
 
+  //TODO: Update the list of items
   void updateTodos() {
-    var newTodos = <Map<String, dynamic>>[];
-    newTodos.addAll([...doingTodos, ...doneTodos]);
-    var newTask = task.value!.copyWith(todos: newTodos);
-    int oldIdx = tasks.indexOf(task.value);
-    tasks[oldIdx] = newTask;
+    var newListItems = <Map<String, dynamic>>[];
+    newListItems.addAll([...doingTodos, ...doneTodos]);
+    var newTodoList = task.value!.copyWith(todos: newListItems);
+    int oldIndex = tasks.indexOf(task.value);
+    tasks[oldIndex] = newTodoList;
     tasks.refresh();
   }
 
+  //TODO: completeListItem
   void doneTodo(String title) {
     var doingTodo = {'title': title, 'done': false};
-    int index = doingTodos.indexWhere(
-            (element) => mapEquals<String, dynamic>(doingTodo, element));
+    int index = doingTodos.indexWhere((element) => mapEquals<String, dynamic>(doingTodo, element));
     doingTodos.removeAt(index);
     var doneTodo = {'title': title, 'done': true};
     doneTodos.add(doneTodo);
@@ -124,12 +132,14 @@ class HomeController extends GetxController {
     doingTodos.refresh();
   }
 
+  //TODO: deleteListItem
   void deleteDoneTodo(doneTodo) {
     int index = doneTodos.indexWhere((element) => mapEquals(doneTodo, element));
     doneTodos.removeAt(index);
     doneTodos.refresh();
   }
 
+  //TODO: isListEmpty
   bool isTodosEmpty(Task task) {
     return task.todos == null || task.todos!.isEmpty;
   }

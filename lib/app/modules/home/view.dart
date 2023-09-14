@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/add_card.dart';
+import 'package:get_it_done_x/app/modules/home/widgets/add_dialogue.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/task_card.dart';
+import '../../core/values/colors.dart';
 import '../../data/modules/task.dart';
 import 'controller.dart';
 
@@ -34,14 +36,44 @@ class HomePage extends GetView<HomeController> {
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 children: [
-                  ...controller.tasks.map((element) => TaskCard(task: element)).toList(),
-                  TaskCard(task: const Task(title: 'title', icon: 0xe59c, color: '#ffffffff')),
+                  //TODO: maybe I can change this to somehow being a swiping to delete
+                  //TODO: I DONT NEED THIS changeDeleting thing -> all it does is just change the icon
+                  ...controller.tasks.map(
+                    (element) => LongPressDraggable(
+                      data: element,
+                      //TODO: this is where you pass it the task object
+                      onDragStarted: () => controller.changeDeleting(true),
+                      onDraggableCanceled: (_, __) => controller.changeDeleting(false),
+                      onDragEnd: (_) => controller.changeDeleting(false),
+                      feedback: Opacity(
+                        opacity: 0.8,
+                        child: TaskCard(task: element),
+                      ),
+                      child: TaskCard(task: element),
+                    ),
+                  ),
                   AddCard()
                 ],
               ),
             )
           ],
         ),
+      ),
+      //TODO: Just remove this entire damn thing almost none of this is necessary
+      floatingActionButton: DragTarget<Task>(builder: (_, __, ___) {
+        return Obx(
+          () => FloatingActionButton(
+            onPressed: () => Get.to(() => AddDialog(), transition: Transition.downToUp),
+            backgroundColor: controller.deleting.value ? Colors.red : blue,
+            child: Icon(
+              controller.deleting.value ? Icons.delete : Icons.add,
+            ),
+          ),
+        );
+      },
+      onAccept: (Task task) {
+        controller.deleteTask(task); //TODO: this will have to be moved to a showmodal thing I think -> pass the modal the todoList  (task)
+        },
       ),
     );
   }

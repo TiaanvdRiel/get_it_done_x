@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../core/utils/extensions.dart';
 import '../../../data/modules/task.dart';
+import '../../list_details/view.dart';
 import '../controller.dart';
 
 //TODO: TodoListCard
@@ -18,9 +19,9 @@ class TaskCard extends StatelessWidget {
     var squareWidth = Get.width - 12.0.wp;
     return GestureDetector(
       onTap: () {
-        homeController.changeTask(task);
-        homeController.changeTodos(task.todos ?? []);
-        //Get.to(() => DetailPage());
+        homeController.changeTask(task); //TODO: Pass the list to the details page
+        homeController.changeTodos(task.todos ?? []); //TODO: Pass the listItems to the details page
+        Get.to(() => DetailPage());
       },
       child: Container(
         width: squareWidth / 2,
