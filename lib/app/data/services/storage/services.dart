@@ -9,7 +9,8 @@ class StorageService extends GetxService {
   // with the key that we defined, if not write empty list to local storage
   Future<StorageService> init() async {
     _storage = GetStorage();
-    await _storage.writeIfNull(taskKey, []);
+    await _storage.write(taskKey, []);
+    //await _storage.writeIfNull(taskKey, []);
     return this;
   }
 
