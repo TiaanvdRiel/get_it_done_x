@@ -117,11 +117,13 @@ class HomeController extends GetxController {
 
   //TODO: Update the list of items
   void updateTodos() {
-    var newListItems = <Map<String, dynamic>>[];
-    newListItems.addAll([...doingTodos, ...doneTodos]);
-    var newTodoList = task.value!.copyWith(todos: newListItems);
-    int oldIndex = tasks.indexOf(task.value);
-    tasks[oldIndex] = newTodoList;
+    if (task.value != null) {
+      var newListItems = <Map<String, dynamic>>[];
+      newListItems.addAll([...doingTodos, ...doneTodos]);
+      var newTodoList = task.value!.copyWith(todos: newListItems);
+      int oldIndex = tasks.indexOf(task.value);
+      tasks[oldIndex] = newTodoList;
+    }
     tasks.refresh();
   }
 

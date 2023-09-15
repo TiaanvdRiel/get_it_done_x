@@ -7,7 +7,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
 import '../../core/values/colors.dart';
 import '../home/controller.dart';
-import '../home/widgets/add_list_item_modal.dart';
+import 'widgets/add_list_item_modal.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({super.key});

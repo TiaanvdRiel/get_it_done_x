@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
-import '../controller.dart';
+import '../../home/controller.dart';
 
 class AddListItem extends StatelessWidget {
   AddListItem({super.key});
