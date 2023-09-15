@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_it_done_x/app/core/values/colors.dart';
+import 'package:get_it_done_x/app/core/constants/colors.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../core/utils/extensions.dart';
 import '../../../data/modules/task.dart';
@@ -9,7 +9,6 @@ import '../controller.dart';
 
 class ListCard extends StatelessWidget {
   ListCard({super.key, required this.task});
-
   final Task task;
   final homeController = Get.find<HomeController>();
 

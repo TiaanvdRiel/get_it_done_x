@@ -6,18 +6,15 @@ import '../../data/services/storage/repository.dart';
 
 class HomeController extends GetxController {
   TaskRepository taskRepository;
-
   HomeController({required this.taskRepository});
 
   final formKey = GlobalKey<FormState>();
   final editController = TextEditingController();
-  final iconChipIndex = 0.obs; //TODO this is the chip index for the icon -> remove this
   final deleting = false.obs; //TODO delete task
   final tasks = <Task>[].obs; // TODO this .obs means observable -> whenever they change, redraw the page
   final task = Rx<Task?>(null); //TODO this is the todoListItem, NO this should be selected list, but I still think I can get rid of this
   final doingTodos = [].obs; //inProgressItems
   final doneTodos = [].obs; //completedListItems
-  final tabIdx = 0.obs;
 
   @override
   void onInit() {
@@ -30,14 +27,6 @@ class HomeController extends GetxController {
   void onClose() {
     editController.dispose();
     super.onClose();
-  }
-
-  void changeCheapIdx(int value) {
-    iconChipIndex.value = value;
-  }
-
-  void changeTabIdx(int value) {
-    tabIdx.value = value;
   }
 
   void changeDeleting(bool val) {
@@ -55,18 +44,14 @@ class HomeController extends GetxController {
 
   //updateTodoList
   updateTask(Task todoList, String title) {
-    print("Update tasks");
     var todoListItems = todoList.todos ?? []; //var todoListItems = todoList.todoListItems
-    print(todoListItems);
     if (containsItem(todoListItems, title)) return false;
     var item = {'title': title, 'done': false}; //var item = {'title: title, 'done': false}
     todoListItems.add(item); // todoListItems.add(item)
     var newTask = todoList.copyWith(todos: todoListItems); //var newTodoList = todoList.copyWith(todoListItems: todoListItems)
-    print(newTask);
     int oldIndex = tasks.indexOf(todoList); // int oldIndex = todoLists.indexOf(todoList)
     tasks[oldIndex] = newTask; //todoLists[oldIndex] = newTodoList
     tasks.refresh();//todoLists.refresh()
-    print(tasks);
     return true;
   }
 

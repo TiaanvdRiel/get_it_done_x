@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
-import '../../../core/values/colors.dart';
+import '../../../core/constants/colors.dart';
 import '../../home/controller.dart';
 
 class CompletedList extends StatelessWidget {

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/add_list_modal.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/list_card.dart';
-import '../../core/values/colors.dart';
+import '../../core/constants/colors.dart';
 import 'controller.dart';
 
 class HomePage extends GetView<HomeController> {
@@ -76,8 +76,6 @@ class HomePage extends GetView<HomeController> {
             ),
           );
           controller.editController.clear();
-          //TODO: remove this
-          controller.iconChipIndex.value = 0;
         },
         backgroundColor: yellow,
         child: const Icon(

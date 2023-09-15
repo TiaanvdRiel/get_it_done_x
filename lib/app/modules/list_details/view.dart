@@ -5,7 +5,7 @@ import 'package:get_it_done_x/app/modules/list_details/widgets/todo_list.dart';
 import 'package:get_it_done_x/app/modules/list_details/widgets/completed_list.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
-import '../../core/values/colors.dart';
+import '../../core/constants/colors.dart';
 import '../home/controller.dart';
 import 'widgets/add_list_item_modal.dart';
 
@@ -16,7 +16,7 @@ class DetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var task = homeController.task.value;
-    var color = HexColor.fromHex(task!.color);
+    // var color = HexColor.fromHex(task!.color);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -47,7 +47,7 @@ class DetailPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      task.title,
+                      task!.title,
                       style: TextStyle(
                         fontSize: 22.0.sp,
                         fontWeight: FontWeight.bold,
@@ -79,12 +79,12 @@ class DetailPage extends StatelessWidget {
                             currentStep: homeController.doneTodos.length,
                             size: 5,
                             padding: 0,
-                            selectedGradientColor: LinearGradient(
+                            selectedGradientColor: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [
-                                color.withOpacity(.5),
-                                color,
+                                yellow,
+                                yellow,
                               ],
                             ),
                             unselectedGradientColor: LinearGradient(
