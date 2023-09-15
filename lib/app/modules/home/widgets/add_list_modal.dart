@@ -9,7 +9,7 @@ import '../../../data/modules/task.dart';
 import '../../../widgets/icons.dart';
 import '../controller.dart';
 
-//TODO: I suppose this will need to be like a floatign action button right?
+
 class AddList extends StatelessWidget {
   AddList({super.key});
 
