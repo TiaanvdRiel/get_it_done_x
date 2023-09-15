@@ -12,7 +12,7 @@ class CompletedList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => homeController.doneTodos.isNotEmpty
+      () => homeController.completedItems.isNotEmpty
           ? ListView(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
@@ -20,19 +20,19 @@ class CompletedList extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
                   child: Text(
-                    "Completed tasks (${homeController.doneTodos.length}):",
+                    "Completed tasks (${homeController.completedItems.length}):",
                     style: TextStyle(
                       color: Colors.grey,
                       fontSize: 14.0.sp,
                     ),
                   ),
                 ),
-                ...homeController.doneTodos
+                ...homeController.completedItems
                     .map(
                       (element) => Dismissible(
                         key: ObjectKey(element),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (_) => homeController.deleteDoneItem(element),
+                        onDismissed: (_) => homeController.deleteCompletedItem(element),
                         background: Container(
                           color: Colors.red.withOpacity(.8),
                           alignment: Alignment.centerRight,

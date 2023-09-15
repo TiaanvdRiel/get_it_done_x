@@ -2,23 +2,20 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/data/services/storage/services.dart';
 import '../../../core/utils/keys.dart';
-import '../../modules/task.dart';
+import '../../modules/todo_list.dart';
 
-
-//TODO Rename all of these tasks to lists
-class TaskProvider {
+class TodoListProvider {
   final _storageService = Get.find<StorageService>();
 
-  List<Task> readTasks() {
-    var tasks = <Task>[];
-    jsonDecode(_storageService.read(taskKey).toString()).forEach(
-          (e) => tasks.add(Task.fromJson(e)),
+  List<TodoList> readTodoLists() {
+    var todoLists = <TodoList>[];
+    jsonDecode(_storageService.read(todoListKey).toString()).forEach(
+          (e) => todoLists.add(TodoList.fromJson(e)),
     );
-    return tasks;
+    return todoLists;
   }
 
-  //TODO change this to createList or createTodoList or something
-  void writeTasks(List<Task> tasks) {
-    _storageService.write(taskKey, jsonEncode(tasks));
+  void writeTodoLists(List<TodoList> tasks) {
+    _storageService.write(todoListKey, jsonEncode(tasks));
   }
 }

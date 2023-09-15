@@ -28,22 +28,22 @@ class HomePage extends GetView<HomeController> {
               Text(
                 "My Lists",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: labelColor,
                   fontSize: 15.0.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Obx(
                 () => ListView.builder(
-                  itemCount: controller.tasks.length,
+                  itemCount: controller.todoLists.length,
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final task = controller.tasks[index];
+                    final task = controller.todoLists[index];
                     return Dismissible(
                       key: ObjectKey(task),
                       direction: DismissDirection.endToStart,
-                      onDismissed: (_) => controller.deleteTask(task),
+                      onDismissed: (_) => controller.deleteTodoList(task),
                       background: Container(
                         alignment: Alignment.centerRight,
                         color: Colors.red,

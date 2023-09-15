@@ -9,8 +9,8 @@ class HomeBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(
           () => HomeController(
-        taskRepository: TaskRepository(
-          taskProvider: TaskProvider(),
+        taskRepository: TodoListRepository(
+          todoListProvider: TodoListProvider(),
         ),
       ),
     );

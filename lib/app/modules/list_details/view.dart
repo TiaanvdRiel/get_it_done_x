@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/modules/list_details/widgets/todo_list.dart';
 import 'package:get_it_done_x/app/modules/list_details/widgets/completed_list.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../core/utils/extensions.dart';
 import '../../core/constants/colors.dart';
 import '../home/controller.dart';
@@ -15,8 +15,7 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var task = homeController.task.value;
-    // var color = HexColor.fromHex(task!.color);
+    var task = homeController.todoList.value;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -24,15 +23,14 @@ class DetailPage extends StatelessWidget {
           key: homeController.formKey,
           child: ListView(
             children: [
-              //TODO: Back button
               Padding(
                 padding: EdgeInsets.all(2.0.wp),
                 child: Row(
                   children: [
                     IconButton(
                       onPressed: () {
-                        homeController.updateTodos(); //TODO: I really don't know if I need this?
-                        homeController.changeTask(null); //TODO: This I do need though
+                        homeController.updateListItems();
+                        homeController.changeTodoList(null);
                         homeController.editController.clear();
                         Get.back();
                       },
@@ -41,7 +39,6 @@ class DetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              //TODO: List name and icon
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0.wp),
                 child: Row(
@@ -56,11 +53,12 @@ class DetailPage extends StatelessWidget {
                   ],
                 ),
               ),
-              //TODO: Progress indicator
+              SizedBox(height: 3.0.wp),
               Obx(() {
-                var totalTasks = homeController.doingTodos.length + homeController.doneTodos.length;
+                var totalTasks = homeController.todoItems.length + homeController.completedItems.length;
+                var completedTasks = homeController.completedItems.length;
                 return Padding(
-                  padding: EdgeInsets.only(left: 8.0.wp, right: 8.0.wp, top: 3.0.wp),
+                  padding: EdgeInsets.symmetric(horizontal: 8.0.wp),
                   child: SizedBox(
                     height: 5.0.hp,
                     child: Column(
@@ -74,27 +72,15 @@ class DetailPage extends StatelessWidget {
                           width: 3.0.wp,
                         ),
                         Expanded(
-                          child: StepProgressIndicator(
-                            totalSteps: totalTasks == 0 ? 1 : totalTasks,
-                            currentStep: homeController.doneTodos.length,
-                            size: 5,
-                            padding: 0,
-                            selectedGradientColor: const LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                yellow,
-                                yellow,
-                              ],
-                            ),
-                            unselectedGradientColor: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.grey[300]!,
-                                Colors.grey[300]!,
-                              ],
-                            ),
+                          child: LinearPercentIndicator(
+                            animation: true,
+                            lineHeight: 1.0.hp,
+                            animationDuration: 2000,
+                            percent: (completedTasks == 0 ? 0 : completedTasks) /
+                                (totalTasks == 0 ? 1 : totalTasks) ,
+                            barRadius: const Radius.circular(100),
+                            progressColor: yellow,
+                            backgroundColor: Colors.white,
                           ),
                         ),
                       ],

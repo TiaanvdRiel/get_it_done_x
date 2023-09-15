@@ -1,12 +1,10 @@
-import '../../modules/task.dart';
+import '../../modules/todo_list.dart';
 import '../../providers/task/provider.dart';
 
-class TaskRepository {
-  TaskProvider taskProvider;
-  TaskRepository({required this.taskProvider});
+class TodoListRepository {
+  TodoListProvider todoListProvider;
+  TodoListRepository({required this.todoListProvider});
 
-  //TODO update the names of these methods as well
-  //TODO also rename everything called "Task"
-  List<Task> readTasks() => taskProvider.readTasks();
-  void writeTasks(List<Task> tasks) => taskProvider.writeTasks(tasks);
+  List<TodoList> readTasks() => todoListProvider.readTodoLists();
+  void writeTasks(List<TodoList> tasks) => todoListProvider.writeTodoLists(tasks);
 }

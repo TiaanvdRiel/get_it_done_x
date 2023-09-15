@@ -1,11 +1,8 @@
-import 'package:dotted_border/dotted_border.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
-import '../../../core/constants/colors.dart';
-import '../../../data/modules/task.dart';
+import '../../../data/modules/todo_list.dart';
 import '../controller.dart';
 
 
@@ -34,12 +31,12 @@ class AddList extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       if (homeController.formKey.currentState!.validate()) {
-                        var task = Task(
+                        var task = TodoList(
                           title: homeController.editController.text,
                         );
                         Get.back();
                         //TODO: Remove this easyLoading stuff and just use a toast
-                        homeController.addTask(task) ? EasyLoading.showSuccess("Create success") : EasyLoading.showError("Task duplicated");
+                        homeController.createTodoList(task) ? EasyLoading.showSuccess("Create success") : EasyLoading.showError("Task duplicated");
                       }
                     },
                     style: const ButtonStyle(

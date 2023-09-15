@@ -1,1 +1,1 @@
-const taskKey = 'tasks';
+const todoListKey = 'lists';

@@ -12,7 +12,7 @@ class TodoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => homeController.doingTodos.isEmpty && homeController.doneTodos.isEmpty
+      () => homeController.todoItems.isEmpty && homeController.completedItems.isEmpty
           ? SizedBox(
               height: 20.0.hp,
               child: Column(
@@ -34,22 +34,22 @@ class TodoList extends StatelessWidget {
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               children: [
-                homeController.doingTodos.isNotEmpty ? Padding(
+                homeController.todoItems.isNotEmpty ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
                   child: Text(
-                    "My tasks (${homeController.doingTodos.length}):",
+                    "Tasks Todo (${homeController.todoItems.length}):",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 14.0.sp,
                     ),
                   ),
                 ) : Container(),
-                ...homeController.doingTodos
+                ...homeController.todoItems
                     .map(
                       (element) => Dismissible(
                         key: ObjectKey(element),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (_) => homeController.deleteTodoItem(element),
+                        onDismissed: (_) => homeController.deleteListItem(element),
                         background: Container(
                           color: Colors.red.withOpacity(.8),
                           alignment: Alignment.centerRight,
@@ -74,8 +74,8 @@ class TodoList extends StatelessWidget {
                                   shape: const CircleBorder(),
                                   side: const BorderSide(width: 1.5, color: Colors.grey),
                                   onChanged: (value) {
-                                    homeController.doneTodo(element['title']);
-                                    homeController.doneTodos.refresh();
+                                    homeController.completeListItem(element['title']);
+                                    homeController.completedItems.refresh();
                                   },
                                 ),
                               ),
@@ -96,7 +96,7 @@ class TodoList extends StatelessWidget {
                       ),
                     )
                     .toList(),
-                if (homeController.doneTodos.isNotEmpty && homeController.doingTodos.isNotEmpty)
+                if (homeController.completedItems.isNotEmpty && homeController.todoItems.isNotEmpty)
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 6.0.wp),
                     child: const Divider(thickness: 1),

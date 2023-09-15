@@ -24,17 +24,17 @@ class AddListItem extends StatelessWidget {
                     onPressed: () {
                       Get.back();
                       homeController.editController.clear();
-                      homeController.changeTask(null);
+                      homeController.changeTodoList(null);
                     },
                     icon: const Icon(Icons.close),
                   ),
                   TextButton(
                     onPressed: () {
                       if (homeController.formKey.currentState!.validate()) {
-                        if (homeController.task.value == null) {
+                        if (homeController.todoList.value == null) {
                           EasyLoading.showError("Please select task type.");
                         } else {
-                          var success = homeController.addTodo(homeController.editController.text);
+                          var success = homeController.addListItem(homeController.editController.text);
                           if (success) {
                             EasyLoading.showSuccess("Add Todo item success");
                           } else {

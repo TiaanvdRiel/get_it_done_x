@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/constants/colors.dart';
-import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import '../../../core/utils/extensions.dart';
-import '../../../data/modules/task.dart';
+import '../../../data/modules/todo_list.dart';
 import '../../list_details/view.dart';
 import '../controller.dart';
 
 class ListCard extends StatelessWidget {
   ListCard({super.key, required this.task});
-  final Task task;
+  final TodoList task;
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        homeController.changeTask(task); //TODO: Pass the list to the details page
-        homeController.changeTodos(task.todos ?? []); //TODO: Pass the listItems to the details page
+        homeController.changeTodoList(task); //TODO: Pass the list to the details page
+        homeController.setListItems(task.listItems ?? []); //TODO: Pass the listItems to the details page
         Get.to(() => DetailPage());
       },
       child: Container(
         height: 14.0.hp,
         margin: EdgeInsets.only(top: 3.0.wp),
-        decoration: const BoxDecoration(color: grey, borderRadius: BorderRadius.all(Radius.circular(20))),
+        decoration: const BoxDecoration(color: lightGrey, borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //TODO: This is the list's name
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 6.0.wp),
               child: Column(
@@ -47,20 +46,20 @@ class ListCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "${task.todos?.length ?? 0} Tasks",
+                        "${task.listItems?.length ?? 0} Tasks",
                         style: TextStyle(
                           fontSize: 11.0.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                          color: labelColor,
                         ),
                       ),
                       const Spacer(),
                       Text(
-                        "${homeController.isTodosEmpty(task) ? "0" : homeController.getDoneTodo(task)}/${homeController.isTodosEmpty(task) ? "0" : task.todos!.length}",
+                        "${homeController.isListEmpty(task) ? "0" : homeController.getDoneTodo(task)}/${homeController.isListEmpty(task) ? "0" : task.listItems!.length}",
                         style: TextStyle(
                           fontSize: 10.0.sp,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: darkGrey,
                         ),
                       ),
                     ],
@@ -68,22 +67,15 @@ class ListCard extends StatelessWidget {
                   SizedBox(
                     height: 2.0.wp,
                   ),
-                  //TODO: Change this to my own linearProgressIndicator
-                  StepProgressIndicator(
-                    totalSteps: homeController.isTodosEmpty(task) ? 1 : task.todos!.length,
-                    currentStep: homeController.isTodosEmpty(task) ? 0 : homeController.getDoneTodo(task),
-                    size: 10,
-                    padding: 0,
-                    selectedGradientColor: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [yellow, yellow],
-                    ),
-                    unselectedGradientColor: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.white, Colors.white],
-                    ),
+                 LinearPercentIndicator(
+                    animation: true,
+                    lineHeight: 1.0.hp,
+                    animationDuration: 2000,
+                    percent: (homeController.isListEmpty(task) ? 0 : homeController.getDoneTodo(task)) /
+                        (homeController.isListEmpty(task) ? 1 : task.listItems!.length),
+                    barRadius: Radius.circular(1.0.hp),
+                    progressColor: yellow,
+                    backgroundColor: Colors.white,
                   ),
                 ],
               ),
