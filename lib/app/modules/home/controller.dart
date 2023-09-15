@@ -132,11 +132,19 @@ class HomeController extends GetxController {
     doingTodos.refresh();
   }
 
-  //TODO: deleteListItem
-  void deleteDoneTodo(doneTodo) {
+  //TODO: deleteCompletedItem
+  void deleteDoneItem(doneTodo) {
     int index = doneTodos.indexWhere((element) => mapEquals(doneTodo, element));
     doneTodos.removeAt(index);
     doneTodos.refresh();
+  }
+
+
+  //TODO: deleteCompletedItem
+  void deleteTodoItem(doingTodo) {
+    int index = doingTodos.indexWhere((element) => mapEquals(doingTodo, element));
+    doingTodos.removeAt(index);
+    doingTodos.refresh();
   }
 
   //TODO: isListEmpty

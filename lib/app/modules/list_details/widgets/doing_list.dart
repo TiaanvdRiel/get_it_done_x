@@ -34,45 +34,71 @@ class DoingList extends StatelessWidget {
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               children: [
+                homeController.doingTodos.isNotEmpty ? Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
+                  child: Text(
+                    "My tasks (${homeController.doingTodos.length}):",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.0.sp,
+                    ),
+                  ),
+                ) : Container(),
                 ...homeController.doingTodos
                     .map(
-                      (element) => Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 9.0.wp, vertical: 3.0.wp),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: Checkbox(
-                                fillColor: MaterialStateProperty.resolveWith((states) => Colors.white),
-                                value: element['done'],
-                                shape: const CircleBorder(),
-                                side: const BorderSide(width: 1.5, color: Colors.grey),
-                                onChanged: (value) {
-                                  homeController.doneTodo(element['title']);
-                                  homeController.doneTodos.refresh();
-                                },
-                              ),
+                      (element) => Dismissible(
+                        key: ObjectKey(element),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (_) => homeController.deleteTodoItem(element),
+                        background: Container(
+                          color: Colors.red.withOpacity(.8),
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 6.0.wp),
+                            child: const Icon(
+                              CupertinoIcons.trash,
+                              color: Colors.white,
                             ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
-                              child: Text(
-                                element['title'],
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.0.sp,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 9.0.wp, vertical: 3.0.wp),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: Checkbox(
+                                  fillColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                                  value: element['done'],
+                                  shape: const CircleBorder(),
+                                  side: const BorderSide(width: 1.5, color: Colors.grey),
+                                  onChanged: (value) {
+                                    homeController.doneTodo(element['title']);
+                                    homeController.doneTodos.refresh();
+                                  },
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
+                                child: Text(
+                                  element['title'],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 12.0.sp,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )
                     .toList(),
                 if (homeController.doneTodos.isNotEmpty && homeController.doingTodos.isNotEmpty)
                   Padding(
-                    padding: EdgeInsets.only(left: 16.0.wp, right: 6.0.wp),
+                    padding: EdgeInsets.symmetric(horizontal: 6.0.wp),
                     child: const Divider(thickness: 1),
                   ),
               ],

@@ -12,7 +12,6 @@ import '../controller.dart';
 //TODO: I suppose this will need to be like a floatign action button right?
 class AddCard extends StatelessWidget {
   AddCard({super.key});
-
   final homeController = Get.find<HomeController>(); //Define homeController
 
   @override

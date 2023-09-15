@@ -3,13 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/modules/list_details/widgets/doing_list.dart';
+import 'package:get_it_done_x/app/modules/list_details/widgets/done_list.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
+import '../../core/values/colors.dart';
 import '../home/controller.dart';
-
+import '../home/widgets/add_dialogue.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override
@@ -57,11 +60,9 @@ class DetailPage extends StatelessWidget {
               ),
               //TODO: Progress indicator
               Obx(() {
-                var totalTasks =
-                    homeController.doingTodos.length + homeController.doneTodos.length;
+                var totalTasks = homeController.doingTodos.length + homeController.doneTodos.length;
                 return Padding(
-                  padding: EdgeInsets.only(
-                      left: 8.0.wp, right: 8.0.wp, top: 3.0.wp),
+                  padding: EdgeInsets.only(left: 8.0.wp, right: 8.0.wp, top: 3.0.wp),
                   child: SizedBox(
                     height: 5.0.hp,
                     child: Column(
@@ -105,8 +106,7 @@ class DetailPage extends StatelessWidget {
               }),
               //TODO: This is for "doing todos"? I guess just remove all of this nonsense
               Padding(
-                padding:
-                EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 2.0.wp),
+                padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 2.0.wp),
                 child: TextFormField(
                   controller: homeController.editController,
                   autofocus: true,
@@ -144,9 +144,114 @@ class DetailPage extends StatelessWidget {
                   ),
                 ),
               ),
-               DoingList(),
-              // DoneList(),
+              DoingList(),
+              DoneList(),
             ],
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => Get.bottomSheet(
+            //AddDialog(),
+            //Text('Test'),
+            WillPopScope(
+              onWillPop: () async => false,
+              child: Scaffold(
+                body: Form(
+                  key: homeController.formKey,
+                  child: ListView(
+                    children: [
+                      //TODO: Top Row
+                      Padding(
+                        padding: EdgeInsets.all(3.0.wp),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Get.back();
+                                homeController.editController.clear();
+                                homeController.changeTask(null);
+                              },
+                              icon: const Icon(Icons.close),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (homeController.formKey.currentState!.validate()) {
+                                  if (homeController.task.value == null) {
+                                    //TODO: validating that task type is selected - probably don't need
+                                    EasyLoading.showError("Please select task type.");
+                                  } else {
+                                    var success = homeController.updateTask(
+                                      homeController.task.value!,
+                                      //TODO:I don't need this I think, so what this is doing is setting the element to task.value, I can just give this the element directly
+                                      homeController.editController.text,
+                                    );
+                                    if (success) {
+                                      EasyLoading.showSuccess("Add Todo item success");
+                                    } else {
+                                      EasyLoading.showError("Todo item is already exist.");
+                                    }
+                                  }
+                                  homeController.editController.clear();
+                                  Get.back();
+                                }
+                              },
+                              style: const ButtonStyle(
+                                overlayColor: MaterialStatePropertyAll(Colors.transparent),
+                              ),
+                              child: Text(
+                                "Done",
+                                style: TextStyle(fontSize: 14.0.sp),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      //TODO: New Task
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
+                        child: Text(
+                          "New Item",
+                          style: TextStyle(
+                            fontSize: 20.0.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey[400]!,
+                              ),
+                            ),
+                          ),
+                          controller: homeController.editController,
+                          autofocus: true,
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Please enter your task here.';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          backgroundColor: yellow,
+          child: const Icon(
+            CupertinoIcons.add,
           ),
         ),
       ),

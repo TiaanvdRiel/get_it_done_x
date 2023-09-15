@@ -7,7 +7,6 @@ import '../controller.dart';
 //TODO: I beleive that this adds ListItems to our TodoList
 class AddDialog extends StatelessWidget {
   AddDialog({super.key});
-
   final homeController = Get.find<HomeController>();
 
   @override
