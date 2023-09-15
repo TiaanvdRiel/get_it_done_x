@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/constants/colors.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+
 import '../../../core/utils/extensions.dart';
 import '../../../data/modules/todo_list.dart';
+import '../../../widgets/progress_indicator.dart';
 import '../../list_details/view.dart';
 import '../controller.dart';
 
@@ -16,8 +17,8 @@ class ListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        homeController.changeTodoList(task); //TODO: Pass the list to the details page
-        homeController.setListItems(task.listItems ?? []); //TODO: Pass the listItems to the details page
+        homeController.changeTodoList(task);
+        homeController.setListItems(task.listItems ?? []);
         Get.to(() => DetailPage());
       },
       child: Container(
@@ -67,16 +68,11 @@ class ListCard extends StatelessWidget {
                   SizedBox(
                     height: 2.0.wp,
                   ),
-                 LinearPercentIndicator(
-                    animation: true,
-                    lineHeight: 1.0.hp,
-                    animationDuration: 2000,
-                    percent: (homeController.isListEmpty(task) ? 0 : homeController.getDoneTodo(task)) /
-                        (homeController.isListEmpty(task) ? 1 : task.listItems!.length),
-                    barRadius: Radius.circular(1.0.hp),
-                    progressColor: yellow,
-                    backgroundColor: Colors.white,
-                  ),
+                  TaskProgressIndicator(
+                    totalTasks: task.listItems!.length,
+                    completedTasks: homeController.getDoneTodo(task),
+
+                  )
                 ],
               ),
             ),

@@ -5,7 +5,6 @@ import 'package:get_it_done_x/app/data/services/storage/services.dart';
 import 'package:get_it_done_x/app/modules/home/binding.dart';
 import 'app/modules/home/view.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() async {
   await GetStorage.init();
@@ -23,7 +22,6 @@ class MyApp extends StatelessWidget {
       title: 'Get(It Done)X',
       home: const HomePage(),
       initialBinding: HomeBinding(),
-      //builder: CupertinoActivityIndicator(), //TODO: Might want to get rid of this and just use CupertinoLoading
     );
   }
 }

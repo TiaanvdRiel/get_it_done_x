@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 
-//TODO: Rename this to ListItem, list_item
 class TodoList extends Equatable {
   final String title;
   final List<dynamic>? listItems;

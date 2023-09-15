@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
+
+import '../../../core/constants/colors.dart';
 import '../../home/controller.dart';
 
 class AddListItem extends StatelessWidget {
@@ -31,16 +33,14 @@ class AddListItem extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       if (homeController.formKey.currentState!.validate()) {
-                        if (homeController.todoList.value == null) {
-                          EasyLoading.showError("Please select task type.");
-                        } else {
-                          var success = homeController.addListItem(homeController.editController.text);
-                          if (success) {
-                            EasyLoading.showSuccess("Add Todo item success");
-                          } else {
-                            EasyLoading.showError("Todo item is already exist.");
-                          }
-                        }
+                        Fluttertoast.showToast(
+                          msg: homeController.addListItem(homeController.editController.text) ? "Todo item added!" : "Todo item is already exist.",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          backgroundColor: green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                         homeController.editController.clear();
                         Get.back();
                       }
@@ -69,10 +69,10 @@ class AddListItem extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey[400]!,
+                      color: lightGrey,
                     ),
                   ),
                 ),

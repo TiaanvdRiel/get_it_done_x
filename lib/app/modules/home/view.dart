@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/add_list_modal.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/list_card.dart';
+
 import '../../core/constants/colors.dart';
 import 'controller.dart';
 

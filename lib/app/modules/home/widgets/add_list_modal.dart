@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
+
+import '../../../core/constants/colors.dart';
 import '../../../data/modules/todo_list.dart';
 import '../controller.dart';
 
@@ -35,8 +37,14 @@ class AddList extends StatelessWidget {
                           title: homeController.editController.text,
                         );
                         Get.back();
-                        //TODO: Remove this easyLoading stuff and just use a toast
-                        homeController.createTodoList(task) ? EasyLoading.showSuccess("Create success") : EasyLoading.showError("Task duplicated");
+                        Fluttertoast.showToast(
+                          msg: homeController.createTodoList(task) ? "List created!" : "List duplicated",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.SNACKBAR,
+                          backgroundColor: green,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
                       }
                     },
                     style: const ButtonStyle(
@@ -67,7 +75,7 @@ class AddList extends StatelessWidget {
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.grey[400]!,
+                      color: lightGrey,
                     ),
                   ),
                 ),

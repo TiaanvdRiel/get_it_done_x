@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it_done_x/app/core/constants/colors.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
+
 import '../../home/controller.dart';
 
 class TodoList extends StatelessWidget {
   TodoList({super.key});
-
   final homeController = Get.find<HomeController>();
 
   @override
@@ -22,7 +23,7 @@ class TodoList extends StatelessWidget {
                   Text(
                     "No items in this list :(",
                     style: TextStyle(
-                      color: Colors.black,
+                      color:labelColor,
                       fontWeight: FontWeight.normal,
                       fontSize: 12.0.sp,
                     ),
@@ -39,7 +40,7 @@ class TodoList extends StatelessWidget {
                   child: Text(
                     "Tasks Todo (${homeController.todoItems.length}):",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: labelColor,
                       fontSize: 14.0.sp,
                     ),
                   ),
@@ -85,7 +86,7 @@ class TodoList extends StatelessWidget {
                                   element['title'],
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: labelColor,
                                     fontSize: 12.0.sp,
                                   ),
                                 ),

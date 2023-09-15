@@ -1,16 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_it_done_x/app/modules/list_details/widgets/todo_list.dart';
 import 'package:get_it_done_x/app/modules/list_details/widgets/completed_list.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-import '../../core/utils/extensions.dart';
+import 'package:get_it_done_x/app/modules/list_details/widgets/todo_list.dart';
+
 import '../../core/constants/colors.dart';
+import '../../core/utils/extensions.dart';
+import '../../widgets/progress_indicator.dart';
 import '../home/controller.dart';
 import 'widgets/add_list_item_modal.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override
@@ -66,21 +68,15 @@ class DetailPage extends StatelessWidget {
                       children: [
                         Text(
                           "$totalTasks Task",
-                          style: TextStyle(color: Colors.grey, fontSize: 12.0.sp),
+                          style: TextStyle(color: darkGrey, fontSize: 12.0.sp),
                         ),
                         SizedBox(
                           width: 3.0.wp,
                         ),
                         Expanded(
-                          child: LinearPercentIndicator(
-                            animation: true,
-                            lineHeight: 1.0.hp,
-                            animationDuration: 2000,
-                            percent: (completedTasks == 0 ? 0 : completedTasks) /
-                                (totalTasks == 0 ? 1 : totalTasks) ,
-                            barRadius: const Radius.circular(100),
-                            progressColor: yellow,
-                            backgroundColor: Colors.white,
+                          child: TaskProgressIndicator(
+                            totalTasks: totalTasks,
+                            completedTasks: completedTasks,
                           ),
                         ),
                       ],

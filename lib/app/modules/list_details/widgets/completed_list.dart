@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it_done_x/app/core/constants/colors.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
-import '../../../core/constants/colors.dart';
+
 import '../../home/controller.dart';
 
 class CompletedList extends StatelessWidget {
@@ -22,7 +23,7 @@ class CompletedList extends StatelessWidget {
                   child: Text(
                     "Completed tasks (${homeController.completedItems.length}):",
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: darkGrey,
                       fontSize: 14.0.sp,
                     ),
                   ),
@@ -53,7 +54,7 @@ class CompletedList extends StatelessWidget {
                                 height: 20,
                                 child: Icon(
                                   CupertinoIcons.checkmark_alt,
-                                  color: Colors.green,
+                                  color: green,
                                 ),
                               ),
                               Padding(
@@ -62,7 +63,7 @@ class CompletedList extends StatelessWidget {
                                   element['title'],
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: darkGrey,
                                     fontSize: 12.0.sp,
                                   ),
                                 ),
