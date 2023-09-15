@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
@@ -14,21 +15,47 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: ListView(
           children: [
             //TODO change out with Image
             Padding(
-              padding: EdgeInsets.all(4.0.wp),
+              padding: EdgeInsets.only(left: 4.0.wp),
               child: Text(
                 "My Lists",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 24.0.sp,
+                  fontSize: 18.0.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
+
+            Obx(
+              () => ListView.builder(
+                itemCount: controller.tasks.length,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  final task = controller.tasks[index];
+                  return Dismissible(
+                    key: Key(task.title.toString()), // Provide a unique key for each item.
+                    onDismissed: (_) {
+                      // Handle item dismissal here, e.g., remove the item from the list.
+                      //controller.removeTask(task);
+                    },
+                    background: Container(
+                      alignment: Alignment.centerRight,
+                      color: Colors.red,
+                      child: const Icon(CupertinoIcons.trash, color: Colors.white),
+                    ),
+                    child: TaskCard(task: task),
+                  );
+                },
+              ),
+            ),
+
             // TODO: Wrap with observable
             Obx(
               () => GridView.count(
@@ -60,19 +87,20 @@ class HomePage extends GetView<HomeController> {
         ),
       ),
       //TODO: Just remove this entire damn thing almost none of this is necessary
-      floatingActionButton: DragTarget<Task>(builder: (_, __, ___) {
-        return Obx(
-          () => FloatingActionButton(
-            onPressed: () => Get.to(() => AddDialog(), transition: Transition.downToUp),
-            backgroundColor: controller.deleting.value ? Colors.red : blue,
-            child: Icon(
-              controller.deleting.value ? Icons.delete : Icons.add,
+      floatingActionButton: DragTarget<Task>(
+        builder: (_, __, ___) {
+          return Obx(
+            () => FloatingActionButton(
+              onPressed: () => Get.to(() => AddDialog(), transition: Transition.downToUp),
+              backgroundColor: controller.deleting.value ? Colors.red : yellow,
+              child: Icon(
+                controller.deleting.value ? Icons.delete : CupertinoIcons.add,
+              ),
             ),
-          ),
-        );
-      },
-      onAccept: (Task task) {
-        controller.deleteTask(task); //TODO: this will have to be moved to a showmodal thing I think -> pass the modal the todoList  (task)
+          );
+        },
+        onAccept: (Task task) {
+          controller.deleteTask(task); //TODO: this will have to be moved to a showmodal thing I think -> pass the modal the todoList  (task)
         },
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/data/services/storage/services.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Get(It Done)X',
       home: const HomePage(),
       initialBinding: HomeBinding(),
-      builder: EasyLoading.init(), //TODO: Might want to get rid of this and just use CupertinoLoading
+      //builder: CupertinoActivityIndicator(), //TODO: Might want to get rid of this and just use CupertinoLoading
     );
   }
 }

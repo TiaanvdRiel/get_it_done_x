@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it_done_x/app/core/values/colors.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../core/utils/extensions.dart';
 import '../../../data/modules/task.dart';
@@ -9,14 +10,12 @@ import '../controller.dart';
 //TODO: TodoListCard
 class TaskCard extends StatelessWidget {
   TaskCard({super.key, required this.task});
-  final Task task;
 
+  final Task task;
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
-    final color = HexColor.fromHex(task.color);
-    var squareWidth = Get.width - 12.0.wp;
     return GestureDetector(
       onTap: () {
         homeController.changeTask(task); //TODO: Pass the list to the details page
@@ -24,58 +23,22 @@ class TaskCard extends StatelessWidget {
         Get.to(() => DetailPage());
       },
       child: Container(
-        width: squareWidth / 2,
-        height: squareWidth / 2,
-        margin: EdgeInsets.all(3.0.wp),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(0, 7),
-              blurRadius: 7,
-              color: Colors.grey[400]!,
-            ),
-          ],
-        ),
+        height: 14.0.hp,
+        margin: EdgeInsets.only(top: 3.0.wp, left: 3.0.wp, right: 3.0.wp),
+        decoration: const BoxDecoration(color: grey, borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            //TODO: Change this to my own linearProgressIndicator
-            StepProgressIndicator(
-              totalSteps: homeController.isTodosEmpty(task) ? 1 : task.todos!.length,
-              currentStep:
-              homeController.isTodosEmpty(task) ? 0 : homeController.getDoneTodo(task),
-              size: 5,
-              padding: 0,
-              selectedGradientColor: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [color.withOpacity(0.5), color],
-              ),
-              unselectedGradientColor: const LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.white, Colors.white],
-              ),
-            ),
-            //TODO: Get rid of this as well
-            Padding(
-              padding: EdgeInsets.all(6.0.wp),
-              child: Icon(
-                IconData(task.icon, fontFamily: 'MaterialIcons'),
-                color: color,
-              ),
-            ),
             //TODO: This is the list's name
             Padding(
-              padding: EdgeInsets.all(6.0.wp),
+              padding: EdgeInsets.symmetric(horizontal: 6.0.wp),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     task.title,
                     style: TextStyle(
-                      fontSize: 13.0.sp,
+                      fontSize: 16.0.sp,
                       fontWeight: FontWeight.bold,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -83,16 +46,50 @@ class TaskCard extends StatelessWidget {
                   SizedBox(
                     height: 2.0.wp,
                   ),
-                  Text(
-                    "${task.todos?.length ?? 0} Task",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                  Row(
+                    children: [
+                      Text(
+                        "${task.todos?.length ?? 0} Tasks",
+                        style: TextStyle(
+                          fontSize: 11.0.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        "${homeController.isTodosEmpty(task) ? "0" : homeController.getDoneTodo(task)}/${homeController.isTodosEmpty(task) ? "0" : task.todos!.length}",
+                        style: TextStyle(
+                          fontSize: 10.0.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 2.0.wp,
+                  ),
+                  //TODO: Change this to my own linearProgressIndicator
+                  StepProgressIndicator(
+                    totalSteps: homeController.isTodosEmpty(task) ? 1 : task.todos!.length,
+                    currentStep: homeController.isTodosEmpty(task) ? 0 : homeController.getDoneTodo(task),
+                    size: 10,
+                    padding: 0,
+                    selectedGradientColor: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [yellow, yellow],
+                    ),
+                    unselectedGradientColor: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.white, Colors.white],
                     ),
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
