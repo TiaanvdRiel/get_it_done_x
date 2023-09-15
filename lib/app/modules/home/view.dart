@@ -15,57 +15,60 @@ class HomePage extends GetView<HomeController> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: ListView(
-          children: [
-            //TODO change out with Image
-            Padding(
-              padding: EdgeInsets.only(left: 4.0.wp),
-              child: Text(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 3.0.wp),
+          child: ListView(
+            children: [
+               Row(
+                 crossAxisAlignment: CrossAxisAlignment.start,
+                 children: [
+                   Image(image: const AssetImage('assets/images/logo.png'), height: 13.0.hp,),
+                 ],
+               ),
+              Text(
                 "My Lists",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18.0.sp,
+                  fontSize: 15.0.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            Obx(
-              () => ListView.builder(
-                itemCount: controller.tasks.length,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                itemBuilder: (context, index) {
-                  final task = controller.tasks[index];
-                  return Dismissible(
-                    key: ObjectKey(task),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (_) => controller.deleteTask(task),
-                    background: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.red,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 6.0.wp),
-                        child: const Icon(
-                          CupertinoIcons.trash,
-                          color: Colors.white,
+              Obx(
+                () => ListView.builder(
+                  itemCount: controller.tasks.length,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    final task = controller.tasks[index];
+                    return Dismissible(
+                      key: ObjectKey(task),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (_) => controller.deleteTask(task),
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        color: Colors.red,
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 6.0.wp),
+                          child: const Icon(
+                            CupertinoIcons.trash,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    child: ListCard(task: task),
-                  );
-                },
+                      child: ListCard(task: task),
+                    );
+                  },
+                ),
               ),
-            ),
-            //AddCard()
-          ],
+              //AddCard()
+            ],
+          ),
         ),
       ),
-      //TODO: Just remove this entire damn thing almost none of this is necessary
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await Get.bottomSheet(
             AddList(),
-            //Container(),
             backgroundColor: Colors.white,
             elevation: 0,
             shape: RoundedRectangleBorder(

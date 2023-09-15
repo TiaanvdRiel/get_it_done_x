@@ -7,7 +7,6 @@ import '../../../data/modules/task.dart';
 import '../../list_details/view.dart';
 import '../controller.dart';
 
-//TODO: TodoListCard
 class ListCard extends StatelessWidget {
   ListCard({super.key, required this.task});
 
@@ -24,7 +23,7 @@ class ListCard extends StatelessWidget {
       },
       child: Container(
         height: 14.0.hp,
-        margin: EdgeInsets.only(top: 3.0.wp, left: 3.0.wp, right: 3.0.wp),
+        margin: EdgeInsets.only(top: 3.0.wp),
         decoration: const BoxDecoration(color: grey, borderRadius: BorderRadius.all(Radius.circular(20))),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
