@@ -55,14 +55,18 @@ class HomeController extends GetxController {
 
   //updateTodoList
   updateTask(Task todoList, String title) {
+    print("Update tasks");
     var todoListItems = todoList.todos ?? []; //var todoListItems = todoList.todoListItems
+    print(todoListItems);
     if (containsItem(todoListItems, title)) return false;
     var item = {'title': title, 'done': false}; //var item = {'title: title, 'done': false}
     todoListItems.add(item); // todoListItems.add(item)
     var newTask = todoList.copyWith(todos: todoListItems); //var newTodoList = todoList.copyWith(todoListItems: todoListItems)
+    print(newTask);
     int oldIndex = tasks.indexOf(todoList); // int oldIndex = todoLists.indexOf(todoList)
     tasks[oldIndex] = newTask; //todoLists[oldIndex] = newTodoList
-    tasks.refresh(); //todoLists.refresh()
+    tasks.refresh();//todoLists.refresh()
+    print(tasks);
     return true;
   }
 

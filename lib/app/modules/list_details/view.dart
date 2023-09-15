@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:get_it_done_x/app/modules/list_details/widgets/doing_list.dart';
-import 'package:get_it_done_x/app/modules/list_details/widgets/done_list.dart';
+import 'package:get_it_done_x/app/modules/list_details/widgets/todo_list.dart';
+import 'package:get_it_done_x/app/modules/list_details/widgets/completed_list.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../core/utils/extensions.dart';
 import '../../core/values/colors.dart';
 import '../home/controller.dart';
-import '../home/widgets/add_dialogue.dart';
+import '../home/widgets/add_list_item_modal.dart';
 
 class DetailPage extends StatelessWidget {
   DetailPage({super.key});
-
   final homeController = Get.find<HomeController>();
 
   @override
@@ -104,145 +102,14 @@ class DetailPage extends StatelessWidget {
                   ),
                 );
               }),
-              //TODO: This is for "doing todos"? I guess just remove all of this nonsense
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 2.0.wp),
-                child: TextFormField(
-                  controller: homeController.editController,
-                  autofocus: true,
-                  validator: (value) {
-                    if (value!.isEmpty || value.trim().isEmpty) {
-                      return 'Please enter your todo item.';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey[300]!,
-                        width: 1,
-                      ),
-                    ),
-                    prefixIcon: const Icon(CupertinoIcons.circle, color: Colors.grey),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        if (homeController.formKey.currentState!.validate()) {
-                          var success = homeController.addTodo(homeController.editController.text);
-                          if (success) {
-                            EasyLoading.showSuccess("Todo item add success");
-                          } else {
-                            EasyLoading.showError('Todo item is already exist');
-                          }
-                          homeController.editController.clear();
-                        }
-                      },
-                      icon: const Icon(
-                        CupertinoIcons.checkmark_alt,
-                        color: Colors.green,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              DoingList(),
-              DoneList(),
+              TodoList(),
+              CompletedList(),
             ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => Get.bottomSheet(
-            //AddDialog(),
-            //Text('Test'),
-            WillPopScope(
-              onWillPop: () async => false,
-              child: Scaffold(
-                body: Form(
-                  key: homeController.formKey,
-                  child: ListView(
-                    children: [
-                      //TODO: Top Row
-                      Padding(
-                        padding: EdgeInsets.all(3.0.wp),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Get.back();
-                                homeController.editController.clear();
-                                homeController.changeTask(null);
-                              },
-                              icon: const Icon(Icons.close),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                if (homeController.formKey.currentState!.validate()) {
-                                  if (homeController.task.value == null) {
-                                    //TODO: validating that task type is selected - probably don't need
-                                    EasyLoading.showError("Please select task type.");
-                                  } else {
-                                    var success = homeController.updateTask(
-                                      homeController.task.value!,
-                                      //TODO:I don't need this I think, so what this is doing is setting the element to task.value, I can just give this the element directly
-                                      homeController.editController.text,
-                                    );
-                                    if (success) {
-                                      EasyLoading.showSuccess("Add Todo item success");
-                                    } else {
-                                      EasyLoading.showError("Todo item is already exist.");
-                                    }
-                                  }
-                                  homeController.editController.clear();
-                                  Get.back();
-                                }
-                              },
-                              style: const ButtonStyle(
-                                overlayColor: MaterialStatePropertyAll(Colors.transparent),
-                              ),
-                              child: Text(
-                                "Done",
-                                style: TextStyle(fontSize: 14.0.sp),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      //TODO: New Task
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
-                        child: Text(
-                          "New Item",
-                          style: TextStyle(
-                            fontSize: 20.0.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.grey[400]!,
-                              ),
-                            ),
-                          ),
-                          controller: homeController.editController,
-                          autofocus: true,
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Please enter your task here.';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            AddListItem(),
             backgroundColor: Colors.white,
             elevation: 0,
             shape: RoundedRectangleBorder(

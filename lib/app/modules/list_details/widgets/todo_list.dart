@@ -2,37 +2,54 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
-import '../../../core/values/colors.dart';
 import '../../home/controller.dart';
 
-class DoneList extends StatelessWidget {
-  DoneList({super.key});
+class TodoList extends StatelessWidget {
+  TodoList({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => homeController.doneTodos.isNotEmpty
-          ? ListView(
+      () => homeController.doingTodos.isEmpty && homeController.doneTodos.isEmpty
+          ? SizedBox(
+              height: 20.0.hp,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "No items in this list :(",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12.0.sp,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : ListView(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               children: [
-                Padding(
+                homeController.doingTodos.isNotEmpty ? Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
                   child: Text(
-                    "Completed tasks (${homeController.doneTodos.length}):",
+                    "My tasks (${homeController.doingTodos.length}):",
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: Colors.black,
                       fontSize: 14.0.sp,
                     ),
                   ),
-                ),
-                ...homeController.doneTodos
+                ) : Container(),
+                ...homeController.doingTodos
                     .map(
                       (element) => Dismissible(
                         key: ObjectKey(element),
                         direction: DismissDirection.endToStart,
-                        onDismissed: (_) => homeController.deleteDoneItem(element),
+                        onDismissed: (_) => homeController.deleteTodoItem(element),
                         background: Container(
                           color: Colors.red.withOpacity(.8),
                           alignment: Alignment.centerRight,
@@ -48,12 +65,18 @@ class DoneList extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 9.0.wp, vertical: 3.0.wp),
                           child: Row(
                             children: [
-                              const SizedBox(
+                              SizedBox(
                                 width: 20,
                                 height: 20,
-                                child: Icon(
-                                  CupertinoIcons.checkmark_alt,
-                                  color: Colors.green,
+                                child: Checkbox(
+                                  fillColor: MaterialStateProperty.resolveWith((states) => Colors.white),
+                                  value: element['done'],
+                                  shape: const CircleBorder(),
+                                  side: const BorderSide(width: 1.5, color: Colors.grey),
+                                  onChanged: (value) {
+                                    homeController.doneTodo(element['title']);
+                                    homeController.doneTodos.refresh();
+                                  },
                                 ),
                               ),
                               Padding(
@@ -62,7 +85,7 @@ class DoneList extends StatelessWidget {
                                   element['title'],
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    color: Colors.grey,
+                                    color: Colors.black,
                                     fontSize: 12.0.sp,
                                   ),
                                 ),
@@ -73,9 +96,13 @@ class DoneList extends StatelessWidget {
                       ),
                     )
                     .toList(),
+                if (homeController.doneTodos.isNotEmpty && homeController.doingTodos.isNotEmpty)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 6.0.wp),
+                    child: const Divider(thickness: 1),
+                  ),
               ],
-            )
-          : Container(),
+            ),
     );
   }
 }

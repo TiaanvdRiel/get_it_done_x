@@ -8,8 +8,8 @@ import '../../list_details/view.dart';
 import '../controller.dart';
 
 //TODO: TodoListCard
-class TaskCard extends StatelessWidget {
-  TaskCard({super.key, required this.task});
+class ListCard extends StatelessWidget {
+  ListCard({super.key, required this.task});
 
   final Task task;
   final homeController = Get.find<HomeController>();

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
 import 'package:get_it_done_x/app/modules/home/widgets/add_card.dart';
-import 'package:get_it_done_x/app/modules/home/widgets/add_dialogue.dart';
-import 'package:get_it_done_x/app/modules/home/widgets/task_card.dart';
+import 'package:get_it_done_x/app/modules/home/widgets/add_list_item_modal.dart';
+import 'package:get_it_done_x/app/modules/home/widgets/list_card.dart';
 import '../../core/values/colors.dart';
 import '../../data/modules/task.dart';
 import 'controller.dart';
@@ -50,7 +50,7 @@ class HomePage extends GetView<HomeController> {
                       color: Colors.red,
                       child: const Icon(CupertinoIcons.trash, color: Colors.white),
                     ),
-                    child: TaskCard(task: task),
+                    child: ListCard(task: task),
                   );
                 },
               ),
@@ -74,9 +74,9 @@ class HomePage extends GetView<HomeController> {
                       onDragEnd: (_) => controller.changeDeleting(false),
                       feedback: Opacity(
                         opacity: 0.8,
-                        child: TaskCard(task: element),
+                        child: ListCard(task: element),
                       ),
-                      child: TaskCard(task: element),
+                      child: ListCard(task: element),
                     ),
                   ),
                   AddCard()
@@ -91,7 +91,7 @@ class HomePage extends GetView<HomeController> {
         builder: (_, __, ___) {
           return Obx(
             () => FloatingActionButton(
-              onPressed: () => Get.to(() => AddDialog(), transition: Transition.downToUp),
+              onPressed: () => Get.to(() => AddListItem(), transition: Transition.downToUp),
               backgroundColor: controller.deleting.value ? Colors.red : yellow,
               child: Icon(
                 controller.deleting.value ? Icons.delete : CupertinoIcons.add,
