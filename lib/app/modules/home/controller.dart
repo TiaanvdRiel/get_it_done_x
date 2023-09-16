@@ -124,7 +124,7 @@ class HomeController extends GetxController {
     return list.listItems == null || list.listItems!.isEmpty;
   }
 
-  int getDoneTodo(TodoList list) {
+  int getCompletedTodos(TodoList list) {
     int res = 0;
     for (int i = 0; i < list.listItems!.length; i++) {
       if (list.listItems![i]['done'] == true) {

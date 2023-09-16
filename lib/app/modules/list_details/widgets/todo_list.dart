@@ -8,6 +8,7 @@ import '../../home/controller.dart';
 
 class TodoList extends StatelessWidget {
   TodoList({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override
@@ -23,7 +24,7 @@ class TodoList extends StatelessWidget {
                   Text(
                     "No items in this list :(",
                     style: TextStyle(
-                      color:labelColor,
+                      color: labelColor,
                       fontWeight: FontWeight.normal,
                       fontSize: 12.0.sp,
                     ),
@@ -35,16 +36,18 @@ class TodoList extends StatelessWidget {
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
               children: [
-                homeController.todoItems.isNotEmpty ? Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
-                  child: Text(
-                    "Tasks Todo (${homeController.todoItems.length}):",
-                    style: TextStyle(
-                      color: labelColor,
-                      fontSize: 14.0.sp,
-                    ),
-                  ),
-                ) : Container(),
+                homeController.todoItems.isNotEmpty
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 6.0.wp, vertical: 3.0.wp),
+                        child: Text(
+                          "Tasks Todo (${homeController.todoItems.length}):",
+                          style: TextStyle(
+                            color: labelColor,
+                            fontSize: 14.0.sp,
+                          ),
+                        ),
+                      )
+                    : Container(),
                 ...homeController.todoItems
                     .map(
                       (element) => Dismissible(

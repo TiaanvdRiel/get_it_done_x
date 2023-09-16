@@ -8,6 +8,7 @@ import '../../home/controller.dart';
 
 class CompletedList extends StatelessWidget {
   CompletedList({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override

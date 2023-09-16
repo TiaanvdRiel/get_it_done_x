@@ -56,7 +56,7 @@ class ListCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        "${homeController.isListEmpty(todoList) ? "0" : homeController.getDoneTodo(todoList)}/${homeController.isListEmpty(todoList) ? "0" : todoList.listItems!.length}",
+                        "${homeController.isListEmpty(todoList) ? "0" : homeController.getCompletedTodos(todoList)}/${homeController.isListEmpty(todoList) ? "0" : todoList.listItems!.length}",
                         style: TextStyle(
                           fontSize: 10.0.sp,
                           fontWeight: FontWeight.bold,
@@ -70,8 +70,7 @@ class ListCard extends StatelessWidget {
                   ),
                   TaskProgressIndicator(
                     totalTasks:  todoList.listItems!.length,
-                    completedTasks: homeController.getDoneTodo(todoList),
-
+                    completedTasks: homeController.getCompletedTodos(todoList),
                   )
                 ],
               ),

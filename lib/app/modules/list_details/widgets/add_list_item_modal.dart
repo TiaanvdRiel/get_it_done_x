@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get_it_done_x/app/core/utils/extensions.dart';
 
 import '../../../core/constants/colors.dart';
+import '../../../widgets/show_toast.dart';
 import '../../home/controller.dart';
 
 class AddListItem extends StatelessWidget {
   AddListItem({super.key});
+
   final homeController = Get.find<HomeController>();
 
   @override
@@ -33,21 +34,13 @@ class AddListItem extends StatelessWidget {
                   TextButton(
                     onPressed: () {
                       if (homeController.formKey.currentState!.validate()) {
-                        Fluttertoast.showToast(
-                          msg: homeController.addListItem(homeController.editController.text) ? "Todo item added!" : "Todo item is already exist.",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.SNACKBAR,
-                          backgroundColor: green,
-                          textColor: Colors.white,
-                          fontSize: 16.0,
+                        showToastMessage(
+                          homeController.addListItem(homeController.editController.text) ? "Todo item added!" : "Todo item is already exist.",
                         );
                         homeController.editController.clear();
                         Get.back();
                       }
                     },
-                    style: const ButtonStyle(
-                      overlayColor: MaterialStatePropertyAll(Colors.transparent),
-                    ),
                     child: Text(
                       "Done",
                       style: TextStyle(fontSize: 14.0.sp),
