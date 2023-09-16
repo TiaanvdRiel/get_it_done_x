@@ -6,7 +6,7 @@ class TodoList extends Equatable {
 
   const TodoList({
     required this.title,
-    this.listItems,
+    required this.listItems,
   });
 
   TodoList copyWith({

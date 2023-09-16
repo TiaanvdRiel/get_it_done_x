@@ -69,7 +69,7 @@ class ListCard extends StatelessWidget {
                     height: 2.0.wp,
                   ),
                   TaskProgressIndicator(
-                    totalTasks: todoList.listItems!.length,
+                    totalTasks:  todoList.listItems!.length,
                     completedTasks: homeController.getDoneTodo(todoList),
 
                   )

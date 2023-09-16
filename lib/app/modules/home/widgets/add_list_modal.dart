@@ -34,7 +34,8 @@ class AddList extends StatelessWidget {
                     onPressed: () {
                       if (homeController.formKey.currentState!.validate()) {
                         var task = TodoList(
-                          title: homeController.editController.text,
+                          title: homeController.editController.text, listItems: const [],
+
                         );
                         Get.back();
                         Fluttertoast.showToast(
@@ -72,7 +73,7 @@ class AddList extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 5.0.wp),
               child: TextFormField(
                 controller: homeController.editController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: lightGrey,
