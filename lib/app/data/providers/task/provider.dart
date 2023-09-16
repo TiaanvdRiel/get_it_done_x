@@ -17,7 +17,7 @@ class TodoListProvider {
     return todoLists;
   }
 
-  void writeTodoLists(List<TodoList> tasks) {
-    _storageService.write(todoListKey, jsonEncode(tasks));
+  void writeTodoLists(List<TodoList> todoLists) {
+    _storageService.write(todoListKey, jsonEncode(todoLists));
   }
 }

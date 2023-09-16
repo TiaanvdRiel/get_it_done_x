@@ -67,7 +67,7 @@ class DetailPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "$totalTasks Task",
+                          "$totalTasks Items",
                           style: TextStyle(color: darkGrey, fontSize: 12.0.sp),
                         ),
                         SizedBox(

@@ -40,11 +40,11 @@ class HomePage extends GetView<HomeController> {
                   shrinkWrap: true,
                   physics: const ClampingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final task = controller.todoLists[index];
+                    final todoList = controller.todoLists[index];
                     return Dismissible(
-                      key: ObjectKey(task),
+                      key: ObjectKey(todoList),
                       direction: DismissDirection.endToStart,
-                      onDismissed: (_) => controller.deleteTodoList(task),
+                      onDismissed: (_) => controller.deleteTodoList(todoList),
                       background: Container(
                         alignment: Alignment.centerRight,
                         color: Colors.red,
@@ -56,7 +56,7 @@ class HomePage extends GetView<HomeController> {
                           ),
                         ),
                       ),
-                      child: ListCard(task: task),
+                      child: ListCard(todoList: todoList),
                     );
                   },
                 ),

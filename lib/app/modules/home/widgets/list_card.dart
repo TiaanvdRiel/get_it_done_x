@@ -9,16 +9,16 @@ import '../../list_details/view.dart';
 import '../controller.dart';
 
 class ListCard extends StatelessWidget {
-  ListCard({super.key, required this.task});
-  final TodoList task;
+  ListCard({super.key, required this.todoList});
+  final TodoList todoList;
   final homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        homeController.changeTodoList(task);
-        homeController.setListItems(task.listItems ?? []);
+        homeController.changeTodoList(todoList);
+        homeController.setListItems(todoList.listItems ?? []);
         Get.to(() => DetailPage());
       },
       child: Container(
@@ -34,7 +34,7 @@ class ListCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    task.title,
+                    todoList.title,
                     style: TextStyle(
                       fontSize: 16.0.sp,
                       fontWeight: FontWeight.bold,
@@ -47,7 +47,7 @@ class ListCard extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "${task.listItems?.length ?? 0} Tasks",
+                        "${todoList.listItems?.length ?? 0} Items",
                         style: TextStyle(
                           fontSize: 11.0.sp,
                           fontWeight: FontWeight.bold,
@@ -56,7 +56,7 @@ class ListCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Text(
-                        "${homeController.isListEmpty(task) ? "0" : homeController.getDoneTodo(task)}/${homeController.isListEmpty(task) ? "0" : task.listItems!.length}",
+                        "${homeController.isListEmpty(todoList) ? "0" : homeController.getDoneTodo(todoList)}/${homeController.isListEmpty(todoList) ? "0" : todoList.listItems!.length}",
                         style: TextStyle(
                           fontSize: 10.0.sp,
                           fontWeight: FontWeight.bold,
@@ -69,8 +69,8 @@ class ListCard extends StatelessWidget {
                     height: 2.0.wp,
                   ),
                   TaskProgressIndicator(
-                    totalTasks: task.listItems!.length,
-                    completedTasks: homeController.getDoneTodo(task),
+                    totalTasks: todoList.listItems!.length,
+                    completedTasks: homeController.getDoneTodo(todoList),
 
                   )
                 ],
